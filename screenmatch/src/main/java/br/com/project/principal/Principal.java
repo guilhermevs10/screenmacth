@@ -1,14 +1,16 @@
-package br.com.alura.principal;
+package br.com.project.principal;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
-import br.com.alura.model.DadosEpisodios;
-import br.com.alura.model.DadosSerie;
-import br.com.alura.model.DadosTemporada;
-import br.com.alura.service.ConsumoApi;
-import br.com.alura.service.ConverteDados;
+import br.com.project.model.DadosEpisodios;
+import br.com.project.model.DadosSerie;
+import br.com.project.model.DadosTemporada;
+import br.com.project.service.ConsumoApi;
+import br.com.project.service.ConverteDados;
 
 public class Principal {
 
@@ -20,6 +22,7 @@ public class Principal {
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apikey=e7b642bc";
 
+    
     public void exibeMenu(){
         System.out.println("Digite o nome da série para busca: ");
         var nomeSerie = leitura.nextLine();
@@ -36,14 +39,25 @@ public class Principal {
 		}
 		temporadas.forEach(System.out::println);
 
-        //for(int i = 0; i < dados.totalTemporadas(); i++){
-        //    List<DadosEpisodios> episodiosTemporada = temporadas.get(i).episodios();
-        //   for(int j = 0; j< episodiosTemporada.size(); j++){
-        //       System.out.println(episodiosTemporada.get(j).titulo());
-        //   }
-        //}
+        for(int i = 0; i < dados.totalTemporadas(); i++){
+            List<DadosEpisodios> episodiosTemporada = temporadas.get(i).episodios();
+           for(int j = 0; j< episodiosTemporada.size(); j++){
+               System.out.println(episodiosTemporada.get(j).titulo());
+          }
+        }
 
         temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo())));
 
+        List<DadosEpisodios> dadosEpisodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream())
+                .collect(Collectors.toList());
+
+        System.out.println("\nTop 5 Episódios");
+        dadosEpisodios.stream()
+                .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+                .sorted(Comparator.comparing(DadosEpisodios::avaliacao).reversed())
+                .limit(5)
+                .forEach(System.out::println);
+           
     }
 }

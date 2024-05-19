@@ -1,4 +1,4 @@
-package br.com.alura.service;
+package br.com.project.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

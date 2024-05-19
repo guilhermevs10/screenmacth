@@ -1,4 +1,4 @@
-package br.com.alura.model;
+package br.com.project.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
